@@ -607,6 +607,103 @@ ruleTester.run("valid-jsdoc", rule, {
                 message: "JSDoc syntax error.",
                 type: "Block"
             }]
+        },
+
+        // type validations
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {String} hi - desc\n" +
+            "* @returns {Astnode} returns a node\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "string": "string",
+                    "astnode": "ASTNode"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'ASTNode' instead of 'Astnode'.",
+                    type: "Block"
+                }
+            ]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {{20:String}} hi - desc\n" +
+            "* @returns {Astnode} returns a node\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "string": "string",
+                    "astnode": "ASTNode"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'ASTNode' instead of 'Astnode'.",
+                    type: "Block"
+                }
+            ]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {String|number|test} hi - desc\n" +
+            "* @returns {Astnode} returns a node\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "test": "Test"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'Test' instead of 'test'.",
+                    type: "Block"
+                }
+            ]
+        },
+        {
+            code:
+            "/**\n" +
+            "* Foo\n" +
+            "* @param {Array.<String>} hi - desc\n" +
+            "* @returns {Astnode} returns a node\n" +
+            "*/\n" +
+            "function foo(hi){}",
+            options: [{
+                preferType: {
+                    "string": "string",
+                    "astnode": "ASTNode"
+                }
+            }],
+            errors: [
+                {
+                    message: "Use 'string' instead of 'String'.",
+                    type: "Block"
+                },
+                {
+                    message: "Use 'ASTNode' instead of 'Astnode'.",
+                    type: "Block"
+                }
+            ]
         }
     ]
 });
